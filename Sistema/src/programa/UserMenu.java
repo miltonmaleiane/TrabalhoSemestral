@@ -33,7 +33,7 @@ public class UserMenu {
 	             
 	             
 	            Connection connection = Connect.connect();
-	            String sql="select * from BOOKS"; //Retreive data from database
+	            String sql="select * from livros"; //Retreive data from database
 	            try {
 	                Statement stmt = (Statement) connection.createStatement(); //connect to database
 	                 ((java.sql.Statement) stmt).executeUpdate("USE LIBRARY"); // use librabry
@@ -70,7 +70,7 @@ public class UserMenu {
 	            //.iid,issued.uid,issued.bid,issued.issued_date,issued.return_date,issued,
 	            Connection connection = Connect.connect(); //connect to database
 	            //retrieve data
-	            String sql="select distinct issued.*,books.bname,books.genre,books.price from issued,books " + "where ((issued.uid=" + UID_int + ") and (books.bid in (select bid from issued where issued.uid="+UID_int+"))) group by iid";
+	            String sql="select distinct issued.*,livros.nomel,livros.genero,livros.preco from issued,livros " + "where ((issued.uid=" + UID_int + ") and (livros.bid in (select bid from issued where issued.uid="+UID_int+"))) group by iid";
 	            String sql1 = "select bid from issued where uid="+UID_int;
 	            try {
 	                Statement stmt = (Statement) connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
@@ -78,7 +78,7 @@ public class UserMenu {
 	                 ((java.sql.Statement) stmt).executeUpdate("USE LIBRARY");
 	                stmt=(Statement) connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
 	                //store in array
-	                ArrayList books_list = new ArrayList();
+	                ArrayList livros_lista = new ArrayList();
 	  
 	                
 	                 
