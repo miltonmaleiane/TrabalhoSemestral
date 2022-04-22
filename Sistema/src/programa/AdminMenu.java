@@ -521,7 +521,7 @@ public class AdminMenu {
 	                     //Intialize date1 with NULL value
 	                     String date1=null;
 	                     String date2=return_date; //Intialize date2 with return date
-	                     String mesDeRetorno = mes_R;
+	                     String mesDeRetorno = mes_R; // inicializa o mes de retorno
 	                     String anoDeRetorno = ano_R;
 	       //edict              
 	                     //select issue date
@@ -539,18 +539,18 @@ public class AdminMenu {
 
 	                    //	 System.out.println( data1 );
 	                    	JOptionPane.showMessageDialog(null, date_1+"teste");
-	                    	 int anoR,mesR,diaR;
+	                    	 int anoR,mesR,diaR; 
 	                    	 diaR=Integer.parseInt(return_date);
 	                    	mesR=Integer.parseInt(mes_R);
 	                    	anoR=Integer.parseInt(ano_R);
-	                    	 LocalDate date_2 =LocalDate.of(anoR,mesR,diaR);
+	                    	 LocalDate date_2 =LocalDate.of(anoR,mesR,diaR); // atribui ano mes e dia para a data de retorno
 	                    	 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	 	                    String dataFormatada = date_2.format(formatter);
 	 	                     return_date =dataFormatada;
 	 	 
 	                         
-	                       //  JOptionPane.showMessageDialog(null, date_2);
-								//subtract the dates and store in diff
+	                       ///  JOptionPane.showMessageDialog(null, date_2);
+								//subtract the  dates and store in diff
 	                           // long diff = date_2.getTime() - date_1.getTime();
 	                            //Convert diff from milliseconds to days 
 	                    	  long diff =0;
@@ -560,7 +560,7 @@ public class AdminMenu {
 	                    	// DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");// padrao de formatacao da data
 	                    	// LocalDateTime data1 = LocalDateTime.parse(date1, formatter); //formatacao de string para data1
 	                    	// LocalDateTime data2 = LocalDateTime.parse(date2, formatter); // formatacao de string para data2
-	                     long diferencaEmDias = ChronoUnit.DAYS.between(data1, date_2);
+	                     long diferencaEmDias = ChronoUnit.DAYS.between(data1, date_2); // calcula diferenca de dias entre a requisicao e devolucao
 	                     System.out.println( diferencaEmDias+"dias de diferenca" );
 	                     
 	                          //  long diferencaEmDias = ChronoUnit.DAYS.between(date_1, date_2);
