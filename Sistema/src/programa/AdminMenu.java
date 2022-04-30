@@ -19,6 +19,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -64,7 +65,7 @@ public class AdminMenu {
 	            Connection connection = Connect.connect(); //connect to database
 	            String sql="select * from livros"; //select all books 
 	            try {
-	                Statement stmt = connection.createStatement();
+	                Statement stmt = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
 	                 stmt.executeUpdate("USE LIBRARY"); //use database
 	                stmt=connection.createStatement();
 	                ResultSet rs=stmt.executeQuery(sql);
@@ -204,7 +205,7 @@ public class AdminMenu {
 	                JFrame g = new JFrame("Enter User Details"); //Frame to enter user details
 	                //g.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	                //Create label 
-	                JLabel l1,l2,l3;  
+	                JLabel l1,l2,l3,lbBI,lbResidencia; 
 	                l1=new JLabel("Username");  //label 1 for username
 	                l1.setBounds(30,15, 100,30); 
 	                 
@@ -213,7 +214,7 @@ public class AdminMenu {
 	                l2.setBounds(30,50, 100,30); 
 	                
 	                l3=new JLabel("Email");  //label 3 for password
-	                l3.setBounds(350,100, 100,30); 
+	                l3.setBounds(30,80, 100,30); 
 	                 
 	                //set text field for username 
 	                JTextField F_user = new JTextField();
@@ -224,20 +225,27 @@ public class AdminMenu {
 	                F_pass.setBounds(110, 45, 200, 30);
 	                //set text field for email
 	                JTextField F_email=new JTextField();
-	                F_email.setBounds(650, 150, 200, 30);
+	                F_email.setBounds(110, 80, 200, 30);
 	                //set radio button for admin
 	                JRadioButton a1 = new JRadioButton("Admin");
-	                a1.setBounds(55, 80, 200,30);
+	                a1.setBounds(55, 200, 200,30);
 	                //set radio button for user
 	                JRadioButton a2 = new JRadioButton("User");
-	                a2.setBounds(130, 80, 200,30);
+	                a2.setBounds(130, 200, 200,30);
 	                //add radio buttons
 	                ButtonGroup bg=new ButtonGroup();    
 	                bg.add(a1);bg.add(a2);  
-	                 
-	                                 
+	                lbBI = new JLabel("NR BI"); // Label para BI
+	                lbBI.setBounds(30, 170, 100, 30);
+	                lbResidencia = new JLabel("Residencia"); // label para residencia
+	                lbResidencia.setBounds(30, 125, 100, 30);
+	                JTextField txtBI = new JTextField(); // textField para BI
+	                txtBI.setBounds(110, 170, 200, 30);
+	                
+	                JTextField txtResidencia = new JTextField();
+	                txtResidencia.setBounds(110, 125, 200, 30);                 
 	                JButton create_but=new JButton("Create");//creating instance of JButton for Create 
-	                create_but.setBounds(130,130,80,25);//x axis, y axis, width, height 
+	                create_but.setBounds(130,230,80,25);//x axis, y axis, width, height 
 	                create_but.addActionListener(new ActionListener() {
 	                     
 	                    public void actionPerformed(ActionEvent e){
@@ -245,6 +253,8 @@ public class AdminMenu {
 	                    String username = F_user.getText();
 	                    String password = F_pass.getText();
 	                    String email = F_email.getText();
+	                    String  nrBI = txtBI.getText();
+	                    String residencia = txtResidencia.getText();
 	                    Boolean admin = false;
 	                     
 	                    if(a1.isSelected()) {
@@ -256,7 +266,7 @@ public class AdminMenu {
 	                    try {
 	                    Statement stmt = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
 	                     stmt.executeUpdate("USE LIBRARY");
-	                     stmt.executeUpdate("INSERT INTO USERS(USERNAME,PASSWORD,EMAIL,ADMIN) VALUES ('"+username+"','"+password+"','"+email+"',"+admin+")");
+	                     stmt.executeUpdate("INSERT INTO USERS(USERNAME,PASSWORD,NUMERO_BI,RESIDENCIA,EMAIL,ADMIN) VALUES ('"+username+"','"+password+"','"+nrBI+"','"+residencia+"','"+email+"',"+admin+")");
 	                     JOptionPane.showMessageDialog(null,"User added!");
 	                     g.dispose();
 	                      
@@ -281,6 +291,10 @@ public class AdminMenu {
 	                    g.add(F_user);
 	                    g.add(F_pass);
 	                    g.add(F_email);
+	                    g.add(txtBI);
+	                    g.add(txtResidencia);
+	                    g.add(lbResidencia);
+	                    g.add(lbBI);
 	                    g.setSize(350,200);//400 width and 500 height  
 	                    g.setLayout(null);//using no layout managers  
 	                    g.setVisible(true);//making the frame visible 
@@ -300,7 +314,7 @@ public class AdminMenu {
 	                JFrame g = new JFrame("Enter Book Details");
 	                //g.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	                // set labels
-	                JLabel l1,l2,l3;  
+	                JLabel l1,l2,l3, lbAutor;  
 	                l1=new JLabel("Nome do livro");  //lebel 1 for book name
 	                l1.setBounds(30,15, 100,30); 
 	                 
@@ -309,29 +323,37 @@ public class AdminMenu {
 	                l2.setBounds(30,53, 100,30); 
 	                 
 	                l3=new JLabel("Preco");  //label 2 for price
-	                l3.setBounds(30,90, 100,30); 
-	                 
+	                l3.setBounds(30,90, 100,30); // label para autor
+	                lbAutor = new JLabel ("Autor");
+	                 lbAutor.setBounds(30, 120, 100, 30);
 	                //set text field for book name
 	                JTextField F_bname = new JTextField();
 	                F_bname.setBounds(110, 15, 200, 30);
-	                 
+	                 JTextField txtAutor = new JTextField();
+	                 txtAutor.setBounds(110, 120, 200, 30);
 	                //set text field for genre 
-	                JTextField F_genre=new JTextField();
-	                F_genre.setBounds(110, 53, 200, 30);
+	                 JComboBox <String> cbGenero = new JComboBox(); // combobox para generos
+	                 cbGenero.addItem("Matematica");
+	                 cbGenero.addItem("Historia");
+	                 cbGenero.addItem("Romance");
+	                 cbGenero.addItem("Literatura");
+	                //JTextField F_genre=new JTextField();
+	                 cbGenero.setBounds(110, 53, 200, 30);
 	                //set text field for price
 	                JTextField F_price=new JTextField();
 	                F_price.setBounds(110, 90, 200, 30);
 	                         
 	                 
 	                JButton create_but=new JButton("Submit");//creating instance of JButton to submit details  
-	                create_but.setBounds(130,130,80,25);//x axis, y axis, width, height 
+	                create_but.setBounds(130,200,80,25);//x axis, y axis, width, height 
 	                create_but.addActionListener(new ActionListener() {
 	                     
 	                    public void actionPerformed(ActionEvent e){
 	                    // assign the book name, genre, price
 	                    String bname = F_bname.getText();
-	                    String genre = F_genre.getText();
+	                    String genre = String.valueOf(cbGenero.getSelectedItem());
 	                    String price = F_price.getText();
+	                    String autor = txtAutor.getText();
 	                    //convert price of integer to int
 	                    int price_int = Integer.parseInt(price);
 	                     
@@ -340,7 +362,7 @@ public class AdminMenu {
 	                    try {
 	                    Statement stmt = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
 	                     stmt.executeUpdate("USE LIBRARY");
-	                     stmt.executeUpdate("INSERT INTO livros(NOMEL,GENERO,PRECO) VALUES ('"+bname+"','"+genre+"',"+price_int+")");
+	                     stmt.executeUpdate("INSERT INTO livros(NOMEL,AUTOR,GENERO,PRECO) VALUES ('"+bname+"','"+autor+"','"+genre+"',"+price_int+")");
 	                     JOptionPane.showMessageDialog(null,"Book added!");
 	                     g.dispose();
 	                      
@@ -360,8 +382,10 @@ public class AdminMenu {
 	                    g.add(l1);
 	                    g.add(l2);
 	                    g.add(F_bname);
-	                    g.add(F_genre);
+	                    g.add(cbGenero);
 	                    g.add(F_price);
+	                    g.add(txtAutor);
+	                    g.add(lbAutor);
 	                    g.setSize(350,200);//400 width and 500 height  
 	                    g.setLayout(null);//using no layout managers  
 	                    g.setVisible(true);//making the frame visible 
@@ -380,7 +404,7 @@ public class AdminMenu {
 	                JFrame g = new JFrame("Enter Details");
 	                //g.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	                //create labels
-	                JLabel l1,l2,l3,l4, l5;  
+	                JLabel l1,l2,l3,l4, l5; 
 	                l1=new JLabel("Book ID(BID)");  // Label 1 for Book ID
 	                l1.setBounds(30,15, 100,30); 
 	                 
@@ -390,9 +414,10 @@ public class AdminMenu {
 	                 
 	                l3=new JLabel("Period(days)");  //Label 3 for period
 	                l3.setBounds(30,90, 100,30); 
+	                
 	               LocalDate hoje = LocalDate.now();//pega a data atual;
-	                l4=new JLabel("Data de Aluguer(DD-MM-YYYY)");  //Label 4 for issue date
-	                l4.setBounds(30,127, 150,30); 
+	                l4=new JLabel("Data de Aluguer");  //Label 4 for issue date
+	                l4.setBounds(30,210, 150,30); 
 	                 
 	                JTextField F_bid = new JTextField();
 	                F_bid.setBounds(110, 15, 200, 30);
@@ -403,20 +428,24 @@ public class AdminMenu {
 	                 
 	                JTextField F_period=new JTextField();
 	                F_period.setBounds(110, 90, 200, 30);
+	                
+	              
+	                
 	                 
 	            /*    JTextField F_issue=new JTextField();*/
 	                l5 = new JLabel (hoje+"");
-	               l5.setBounds(180, 130, 130, 30);   
+	               l5.setBounds(180, 210, 130, 30);   
 	 
 	                 
 	                JButton create_but=new JButton("Submit");//creating instance of JButton  
-	                create_but.setBounds(130,170,80,25);//x axis, y axis, width, height 
+	                create_but.setBounds(130,270,80,25);//x axis, y axis, width, height 
 	                create_but.addActionListener(new ActionListener() {
 	                     
 	                    public void actionPerformed(ActionEvent e){
 	                     
 	                    String uid = F_uid.getText();
 	                    String bid = F_bid.getText();
+	                   
 	                    String period = F_period.getText(
 	                    		);
 	                    LocalDate dataAtual =LocalDate.now(); // pega a data actual
@@ -459,9 +488,12 @@ public class AdminMenu {
 	                    g.add(l2);
 	                    g.add(F_uid);
 	                    g.add(F_bid);
+	                  
 	                    g.add(F_period);
 	                    g.add(l5);
-	                    g.setSize(350,250);//400 width and 500 height  
+	          
+	                    
+	                    g.setSize(550,350);//400 width and 500 height  
 	                    g.setLayout(null);//using no layout managers  
 	                    g.setVisible(true);//making the frame visible 
 	                    g.setLocationRelativeTo(null);
@@ -480,14 +512,15 @@ public class AdminMenu {
 	                JFrame g = new JFrame("Enter Details");
 	                //g.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	                //set labels 
-	                JLabel l1,l2,l3,l4;  
+	                JLabel l1,l2,l3,l4,lbEstado;  
 	                l1=new JLabel("Issue ID(IID)");  //Label 1 for Issue ID
 	                l1.setBounds(30,15, 100,30); 
 	                
 	                 
 	                l4=new JLabel("Return Date(DD-MM-YYYY)");  
 	                l4.setBounds(30,50, 150,30); 
-	                 
+	                lbEstado = new JLabel ("Estado");
+	                lbEstado.setBounds(30, 170, 150, 30);
 	                JTextField F_iid = new JTextField();
 	                F_iid.setBounds(110, 15, 200, 30);
 	                 
@@ -501,9 +534,13 @@ public class AdminMenu {
 	                
 	                JTextField ano_retorno=new JTextField("Ano do retorno");
 	                ano_retorno.setBounds(180, 120, 130, 30);   
-	 
+	                JComboBox <String> cbEstado = new JComboBox();
+	                cbEstado.addItem("Bem conservado");
+	                cbEstado.addItem("Mal conservado");
+	                cbEstado.addItem("Critico");
+	                cbEstado.setBounds(110, 170, 130, 30);
 	                JButton create_but=new JButton("Return");//creating instance of JButton to mention return date and calculcate fine
-	                create_but.setBounds(130,170,80,25);//x axis, y axis, width, height 
+	                create_but.setBounds(130,210,80,25);//x axis, y axis, width, height 
 	                create_but.addActionListener(new ActionListener() {
 	                     
 	                    public void actionPerformed(ActionEvent e){                 
@@ -513,6 +550,7 @@ public class AdminMenu {
 	                    String return_date = F_return.getText();
 	                     String mes_R = mes_retorno.getText();
 	                     String ano_R = ano_retorno.getText();
+	                     String estado = String.valueOf(cbEstado.getSelectedItem()); 
 	                    Connection connection = Connect.connect();
 	                     
 	                    try {
@@ -572,6 +610,7 @@ public class AdminMenu {
 	                     
 	                     //update return date
 	                     stmt.executeUpdate("UPDATE ALUGUER SET DATA_RETORNO='"+return_date+"' WHERE IID="+iid);
+	                     stmt.executeUpdate("UPDATE ALUGUER SET ESTADO = '"+estado+"' WHERE IID="+iid );
 	                     g.dispose();
 	                      
 	 
@@ -579,12 +618,37 @@ public class AdminMenu {
 	                     Statement stmt1 = connection1.createStatement();
 	                     stmt1.executeUpdate("USE LIBRARY");                
 	                    ResultSet rs1 = stmt1.executeQuery("SELECT PERIOD FROM ALUGUER WHERE IID="+iid); //set period
+	             //       ResultSet rs2 = stmt1.executeQuery("SELECT BID FROM ALUGUER WHERE BID="+iid);
+	                    //JOptionPane.showMessageDialog(null,"ID do livro"+rs2);
+	             /*   
+	                    while (rs2.next()) {
+	                       String idLivro =null;
+	                       idLivro = rs2.getString(1);
+	                    }*/
 	                    String diff=null; 
 	                    while (rs1.next()) {
 	                         diff = rs1.getString(1);
 	                          
 	                       }
 	                    int diff_int = Integer.parseInt(diff);
+	                    JOptionPane.showMessageDialog(null,"ID do livro"+diff_int);
+	                    
+	                    // connection 2
+	               /*     Connection connection2 = Connect.connect();
+	                     Statement stmt2 = connection2.createStatement();
+	                     stmt2.executeUpdate("USE LIBRARY");                
+	                    ResultSet rs2 = stmt2.executeQuery("SELECT BID FROM ALUGUER WHERE IID="+iid); //set period
+	                    String pre =null; 
+	                    while (rs1.next()) {
+	                         pre = rs2.getString(1);
+	                          
+	                       }
+	                    int idL= Integer.parseInt(pre);
+	                    JOptionPane.showMessageDialog(null,"ID do livro"+idL); 
+	                    */
+	                    
+	                    
+	                    // fim connection 2
 	               /*     if(ex.days & amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;gt;diff_int) { //If number of days are more than the period then calculcate fine
 	                         
 	                        //System.out.println(ex.days);
@@ -616,6 +680,8 @@ public class AdminMenu {
 	                    g.add(F_return);
 	                    g.add(ano_retorno);
 	                  g.add(mes_retorno);
+	                  g.add(lbEstado);
+	                  g.add(cbEstado);
 	                    g.setSize(350,250);//400 width and 500 height  
 	                    g.setLayout(null);//using no layout managers  
 	                    g.setVisible(true);//making the frame visible 

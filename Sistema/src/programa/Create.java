@@ -29,21 +29,24 @@ public class Create {
 	          ((java.sql.Statement) stmt).executeUpdate(sql); 
 	          ((java.sql.Statement) stmt).executeUpdate("USE LIBRARY"); //Use Database
 	          //Create Users Table
-	          String sql1 = "CREATE TABLE USERS(UID INT NOT NULL AUTO_INCREMENT PRIMARY KEY, USERNAME VARCHAR(30), PASSWORD VARCHAR(30),EMAIL VARCHAR(30),  ADMIN BOOLEAN)";
+	          String sql1 = "CREATE TABLE USERS(UID INT NOT NULL AUTO_INCREMENT PRIMARY KEY, USERNAME VARCHAR(30), PASSWORD VARCHAR(30), NUMERO_BI VARCHAR(30), RESIDENCIA VARCHAR(30), EMAIL VARCHAR(30),  ADMIN BOOLEAN)";
 	          ((java.sql.Statement) stmt).executeUpdate(sql1);
 	          //Insert into users table
-	          ((java.sql.Statement) stmt).executeUpdate("INSERT INTO USERS(USERNAME, PASSWORD,EMAIL, ADMIN) VALUES('admin','admin','miltonplay2k@gmail.com',TRUE)");
+	          ((java.sql.Statement) stmt).executeUpdate("INSERT INTO USERS(USERNAME, PASSWORD,NUMERO_BI,RESIDENCIA,EMAIL, ADMIN) VALUES('admin','admin','12345','fomento','miltonplay2k@gmail.com',TRUE)");
 	          //Create Books table
-	          ((java.sql.Statement) stmt).executeUpdate("CREATE TABLE LIVROS(BID INT NOT NULL AUTO_INCREMENT PRIMARY KEY, NOMEL VARCHAR(50), GENERO VARCHAR(20), PRECO INT)");
+	          ((java.sql.Statement) stmt).executeUpdate("CREATE TABLE LIVROS(BID INT NOT NULL AUTO_INCREMENT PRIMARY KEY, NOMEL VARCHAR(50), AUTOR VARCHAR(50),  GENERO VARCHAR(20), PRECO INT)");
 	          //Create Issued Table
-	          ((java.sql.Statement) stmt).executeUpdate("CREATE TABLE ALUGUER(IID INT NOT NULL AUTO_INCREMENT PRIMARY KEY, UID INT, BID INT, DATA_ALUGUER VARCHAR(20), DATA_RETORNO VARCHAR(20), PERIOD INT, FINE INT)");
+	          ((java.sql.Statement) stmt).executeUpdate("CREATE TABLE ALUGUER(IID INT NOT NULL AUTO_INCREMENT PRIMARY KEY, UID INT, BID INT, DATA_ALUGUER VARCHAR(20), DATA_RETORNO VARCHAR(20), PERIOD INT, FINE INT, ESTADO VARCHAR(20), MULTA_DIAS INT, MULTA_CONSERVACAO INT, MULTA_TOTAL INT)");
 	          //Insert into books table
 	          ((java.sql.Statement) stmt).executeUpdate("INSERT INTO BOOKS(BNAME, GENRE, PRICE) VALUES ('War and Peace', 'Mystery', 200),  ('The Guest Book', 'Fiction', 300), ('The Perfect Murder','Mystery', 150), ('Accidental Presidents', 'Biography', 250), ('The Wicked King','Fiction', 350)");
 	           
-	    resultSet.close();
+	   // ESTADO, MULTA_DIAS, MULTA_CONSERVACAO
+	          resultSet.close();
 	    }
 	     catch (Exception ex) {
 	         ex.printStackTrace();
+	         
+	         
 	}
 	}
 }
