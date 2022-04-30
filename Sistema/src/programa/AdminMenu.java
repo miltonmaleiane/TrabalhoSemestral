@@ -31,11 +31,11 @@ import javax.swing.JTextField;
 import net.proteanit.sql.DbUtils;
 import programa.Principal.ex;
 import java.net.MalformedURLException;
-
+// teste do git
 public class AdminMenu {
 	public static void admin_menu() {
 	     
-	     
+	     //commit test
 	    JFrame f=new JFrame("Janela do administrador"); //Give dialog box name as admin functions
 	    //f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //
 	     
