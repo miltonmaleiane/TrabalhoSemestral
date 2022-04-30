@@ -35,7 +35,7 @@ import java.net.MalformedURLException;
 public class AdminMenu {
 	public static void admin_menu() {
 	     
-	     //commit test
+	     //commit teste
 	    JFrame f=new JFrame("Janela do administrador"); //Give dialog box name as admin functions
 	    //f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //
 	     
