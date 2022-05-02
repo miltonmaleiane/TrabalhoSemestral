@@ -36,7 +36,7 @@ public class Create {
 	          //Create Books table
 	          ((java.sql.Statement) stmt).executeUpdate("CREATE TABLE LIVROS(BID INT NOT NULL AUTO_INCREMENT PRIMARY KEY, NOMEL VARCHAR(50), AUTOR VARCHAR(50),  GENERO VARCHAR(20), PRECO INT)");
 	          //Create Issued Table
-	          ((java.sql.Statement) stmt).executeUpdate("CREATE TABLE ALUGUER(IID INT NOT NULL AUTO_INCREMENT PRIMARY KEY, UID INT, BID INT, DATA_ALUGUER VARCHAR(20), DATA_RETORNO VARCHAR(20), PERIOD INT, FINE INT, ESTADO VARCHAR(20), MULTA_DIAS INT, MULTA_CONSERVACAO INT, MULTA_TOTAL INT)");
+	          ((java.sql.Statement) stmt).executeUpdate("CREATE TABLE ALUGUER(IID INT NOT NULL AUTO_INCREMENT PRIMARY KEY, UID INT, BID INT, DATA_ALUGUER VARCHAR(20), DATA_RETORNO VARCHAR(20), PERIOD INT, FINE INT, ESTADO VARCHAR(20), MULTA_DIAS DECIMAL(10,0), MULTA_CONSERVACAO DECIMAL(10,0), MULTA_TOTAL DECIMAL(10,0))");
 	          //Insert into books table
 	          ((java.sql.Statement) stmt).executeUpdate("INSERT INTO BOOKS(BNAME, GENRE, PRICE) VALUES ('War and Peace', 'Mystery', 200),  ('The Guest Book', 'Fiction', 300), ('The Perfect Murder','Mystery', 150), ('Accidental Presidents', 'Biography', 250), ('The Wicked King','Fiction', 350)");
 	           

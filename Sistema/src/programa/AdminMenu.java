@@ -543,6 +543,8 @@ public class AdminMenu {
 	                create_but.setBounds(130,210,80,25);//x axis, y axis, width, height 
 	                create_but.addActionListener(new ActionListener() {
 	                     
+	                	
+	                	   long diferencaEmDias;
 	                    public void actionPerformed(ActionEvent e){                 
 	                     
 	                    String iid = F_iid.getText();
@@ -568,7 +570,7 @@ public class AdminMenu {
 	                         date1 = rs.getString(1);
 	                          
 	                       }
-	                      
+	                      long diasDiferenca;
 	                     try {
 	                     /*     */  
 	                    	 
@@ -598,16 +600,17 @@ public class AdminMenu {
 	                    	// DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");// padrao de formatacao da data
 	                    	// LocalDateTime data1 = LocalDateTime.parse(date1, formatter); //formatacao de string para data1
 	                    	// LocalDateTime data2 = LocalDateTime.parse(date2, formatter); // formatacao de string para data2
-	                     long diferencaEmDias = ChronoUnit.DAYS.between(data1, date_2); // calcula diferenca de dias entre a requisicao e devolucao
+	                      diferencaEmDias = ChronoUnit.DAYS.between(data1, date_2); // calcula diferenca de dias entre a requisicao e devolucao
+	                     diasDiferenca = diferencaEmDias;
 	                     System.out.println( diferencaEmDias+"dias de diferenca" );
-	                     
+	                    
 	                          //  long diferencaEmDias = ChronoUnit.DAYS.between(date_1, date_2);
 	                        } catch (ParseException e1) {
 	                            // TODO Auto-generated catch block
 	                            e1.printStackTrace();
 	                        }
-	                      
-	                     
+	                   
+	                   
 	                     //update return date
 	                     stmt.executeUpdate("UPDATE ALUGUER SET DATA_RETORNO='"+return_date+"' WHERE IID="+iid);
 	                     stmt.executeUpdate("UPDATE ALUGUER SET ESTADO = '"+estado+"' WHERE IID="+iid );
@@ -631,24 +634,41 @@ public class AdminMenu {
 	                          
 	                       }
 	                    int diff_int = Integer.parseInt(diff);
-	                    JOptionPane.showMessageDialog(null,"ID do livro"+diff_int);
+	                    JOptionPane.showMessageDialog(null,"periodo"+diff_int);
 	                    
 	                    // connection 2
-	               /*     Connection connection2 = Connect.connect();
+	                    
+	                    long periodoUltrapassado = diferencaEmDias - diff_int; // retorna a diferenca de dias que o usuario ultrapassou
+	                   Connection connection2 = Connect.connect();
 	                     Statement stmt2 = connection2.createStatement();
 	                     stmt2.executeUpdate("USE LIBRARY");                
-	                    ResultSet rs2 = stmt2.executeQuery("SELECT BID FROM ALUGUER WHERE IID="+iid); //set period
+	                    ResultSet rs2 = stmt2.executeQuery("SELECT BID FROM ALUGUER WHERE IID="+iid); //seleciona o id do livro book id
 	                    String pre =null; 
-	                    while (rs1.next()) {
+	                    while (rs2.next()) {
 	                         pre = rs2.getString(1);
 	                          
 	                       }
 	                    int idL= Integer.parseInt(pre);
 	                    JOptionPane.showMessageDialog(null,"ID do livro"+idL); 
-	                    */
+	                    
 	                    
 	                    
 	                    // fim connection 2
+	                    
+	                    // connection 3
+	                    Connection connection3 = Connect.connect();
+	                     Statement stmt3 = connection3.createStatement();
+	                     stmt3.executeUpdate("USE LIBRARY");                
+	                    ResultSet rs3 = stmt3.executeQuery("SELECT PRECO FROM LIVROS WHERE BID="+ idL); //seleciona o preco do livro com base no seu  id
+	                    String price =null; 
+	                    while (rs3.next()) {
+	                         price = rs3.getString(1);
+	                          
+	                       }
+	                    int preco= Integer.parseInt(price);
+	                    JOptionPane.showMessageDialog(null,"PRECO"+preco); 
+	                    
+	                    // fim da connection 3
 	               /*     if(ex.days & amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;gt;diff_int) { //If number of days are more than the period then calculcate fine
 	                         
 	                        //System.out.println(ex.days);
@@ -659,10 +679,53 @@ public class AdminMenu {
 	                        JOptionPane.showMessageDialog(null,fine_str);
 	                         
 	                    }
+	                    
 	             */
+	                    double livroPor = (0.5 * preco);
+	                    double livroPor2 = (0.10 * preco);
+	                    
+	                    
+	                    double multaDias = 0; // declaracao e inicializacao de multaDIas
+	                   if (periodoUltrapassado >0) {
+	                     multaDias = livroPor2 *     periodoUltrapassado;
+	                   }else {
+	                	   multaDias =0;
+	                   }
+	                   
+	                    stmt.executeUpdate("UPDATE ALUGUER SET MULTA_DIAS='"+multaDias+"' WHERE IID="+iid);
+	                    JOptionPane.showMessageDialog(null,"multa dias!"+multaDias);
+	                    
+	                    
+	                    Connection connection4 = Connect.connect();
+	                     Statement stmt4 = connection4.createStatement();
+	                     stmt4.executeUpdate("USE LIBRARY");                
+	                    ResultSet rs4 = stmt4.executeQuery("SELECT ESTADO FROM ALUGUER WHERE IID="+ iid); //seleciona o estado do livro com base no seu  id
+	                    String estadoCon =null; 
+	                    while (rs4.next()) {
+	                    	estadoCon = rs4.getString(1);
+	                          
+	                       }
+	                    JOptionPane.showMessageDialog(null,"Estado"+estadoCon);
+	                    double multaEstado = 0.0 ; // inicializa  a variavel multa conservacao
+	                    
+	                    if (estadoCon.equals("Mal conservado")) { // calcula multa consevacao
+	                    	multaEstado = (preco * 0.5);
+	                    	
+	                    	
+	                    }else {
+	                    	 if (estadoCon.equals("Critico")) {
+	                    		 multaEstado = (preco );
+	                    	 }
+	                    	 
+	                    }
+	                    System.out.println("multa conservacao"+multaEstado);
+	                    stmt.executeUpdate("UPDATE ALUGUER SET MULTA_CONSERVACAO='"+multaEstado+"' WHERE IID="+iid);
+	                    
+	                    
 	                     JOptionPane.showMessageDialog(null,"Book Returned!");
 	                      
 	                    }
+	                     
 	                             
 	                     
 	                    catch (SQLException e1) {
