@@ -648,7 +648,7 @@ public class AdminMenu {
 	                         pre = rs2.getString(1);
 	                          
 	                       }
-	                    int idL= Integer.parseInt(pre);
+	                    int idL= Integer.parseInt(pre); // retorna o id do livro
 	                    JOptionPane.showMessageDialog(null,"ID do livro"+idL); 
 	                    
 	                    
@@ -665,7 +665,7 @@ public class AdminMenu {
 	                         price = rs3.getString(1);
 	                          
 	                       }
-	                    int preco= Integer.parseInt(price);
+	                    int preco= Integer.parseInt(price); // retorna preco do livro
 	                    JOptionPane.showMessageDialog(null,"PRECO"+preco); 
 	                    
 	                    // fim da connection 3
@@ -681,8 +681,8 @@ public class AdminMenu {
 	                    }
 	                    
 	             */
-	                    double livroPor = (0.5 * preco);
-	                    double livroPor2 = (0.10 * preco);
+	                    double livroPor = (0.5 * preco);// retorna a porcentagem do valor normal
+	                    double livroPor2 = (0.10 * preco); //retorna a porcentagem do valor multa
 	                    
 	                    
 	                    double multaDias = 0; // declaracao e inicializacao de multaDIas
@@ -768,5 +768,7 @@ public class AdminMenu {
 	     
 	    }
 	}
+
+//commit 2/5/2022
 
 
