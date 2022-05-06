@@ -304,7 +304,89 @@ public class AdminMenu {
 	    }
 	    });
 	         
+	   
+	    // pesquisar usuario
+	    JButton find_user=new JButton("find User"); //creating instance of JButton to add users
+	    find_user.setBounds(20,100,120,25); //set dimensions for button
 	     
+	    find_user.addActionListener(new ActionListener() {
+	        public void actionPerformed(ActionEvent e){
+	                 
+	                JFrame g = new JFrame("Enter User Details"); //Frame to enter user details
+	                //g.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	                //Create label 
+	                JLabel l1,l2,l3,lbBI,lbResidencia; 
+	                l1=new JLabel("ID USUARIO");  //label 1 for username
+	                l1.setBounds(30,15, 100,30); 
+	                 
+	                 
+	                
+	                 
+	                //set text field for username 
+	                JTextField F_user = new JTextField();
+	                F_user.setBounds(110, 15, 200, 30);
+	                 
+	                
+	                
+	               
+	              
+	                                
+	                JButton create_but=new JButton("pesquisar");//creating instance of JButton for Create 
+	                create_but.setBounds(130,230,80,25);//x axis, y axis, width, height 
+	                create_but.addActionListener(new ActionListener() {
+	                     
+	                    public void actionPerformed(ActionEvent e){
+	                     
+	                    	JFrame f = new JFrame("FIND USER");
+	    	                //f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	                    	String id = F_user.getText();
+	                    	 int user_id;
+	    	                 user_id = Integer.parseInt(id);
+	    	              
+	    	                Connection connection = Connect.connect();
+	    	                String sql=("SELECT * FROM USERS WHERE UID="+user_id); //retrieve all users
+	    	                try {
+	    	                    Statement stmt = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+	    	                     stmt.executeUpdate("USE LIBRARY"); //use database
+	    	                    stmt=connection.createStatement();
+	    	                    ResultSet rs=stmt.executeQuery(sql);
+	    	                    JTable book_list= new JTable();
+	    	                    book_list.setModel(DbUtils.resultSetToTableModel(rs)); 
+	    	                    //mention scroll bar
+	    	                    JScrollPane scrollPane = new JScrollPane(book_list);
+	    	 
+	    	                    f.add(scrollPane); //add scrollpane
+	    	                    f.setSize(800, 400); //set size for frame
+	    	                    f.setVisible(true);
+	    	                    f.setLocationRelativeTo(null);
+	    	                } catch (SQLException e1) {
+	    	                    // TODO Auto-generated catch block
+	    	                     JOptionPane.showMessageDialog(null, e1);
+	    	                }  
+	                     
+	                    }
+	                
+	                     
+	                });
+	                     
+	                 
+	                    g.add(create_but);
+	                  
+	                    g.add(l1);
+	                
+	                    g.add(F_user);
+	                   
+	                 
+	               
+	                    g.setSize(350,200);//400 width and 500 height  
+	                    g.setLayout(null);//using no layout managers  
+	                    g.setVisible(true);//making the frame visible 
+	                    g.setLocationRelativeTo(null);
+	                 
+	                 
+	    }
+	    });
+	    // fim pesquisar usuario
 	    JButton add_book=new JButton("Add Book"); //creating instance of JButton for adding books
 	    add_book.setBounds(150,60,120,25); 
 	     
@@ -681,6 +763,7 @@ public class AdminMenu {
 	                    }
 	                    
 	             */
+	                    double multaTotal = 0;
 	                    double livroPor = (0.5 * preco);// retorna a porcentagem do valor normal
 	                    double livroPor2 = (0.10 * preco); //retorna a porcentagem do valor multa
 	                    
@@ -718,9 +801,10 @@ public class AdminMenu {
 	                    	 }
 	                    	 
 	                    }
+	                    multaTotal = multaDias + multaEstado; 
 	                    System.out.println("multa conservacao"+multaEstado);
 	                    stmt.executeUpdate("UPDATE ALUGUER SET MULTA_CONSERVACAO='"+multaEstado+"' WHERE IID="+iid);
-	                    
+	                    stmt.executeUpdate("UPDATE ALUGUER SET MULTA_TOTAL='"+multaTotal+"' WHERE IID="+iid);
 	                    
 	                     JOptionPane.showMessageDialog(null,"Book Returned!");
 	                      
@@ -760,6 +844,7 @@ public class AdminMenu {
 	    f.add(users_but);
 	    f.add(view_but);
 	    f.add(add_user);
+	    f.add(find_user);
 	    //f.add(excluir_but);
 	    f.setSize(600,200);//400 width and 500 height  
 	    f.setLayout(null);//using no layout managers  
@@ -768,7 +853,5 @@ public class AdminMenu {
 	     
 	    }
 	}
-
-//commit 2/5/2022
 
 
