@@ -1,6 +1,16 @@
 package programa;
 
 import java.awt.event.ActionEvent;
+import java.util.Properties;
+import javax.mail.Address;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -15,8 +25,17 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
+import javax.mail.Address;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -517,12 +536,12 @@ public class AdminMenu {
 	            /*    JTextField F_issue=new JTextField();*/
 	                l5 = new JLabel (hoje+"");
 	               l5.setBounds(180, 210, 130, 30);   
-	 
+	               	
 	                 
 	                JButton create_but=new JButton("Submit");//creating instance of JButton  
 	                create_but.setBounds(130,270,80,25);//x axis, y axis, width, height 
 	                create_but.addActionListener(new ActionListener() {
-	                     
+	                	String usuario_mail;
 	                    public void actionPerformed(ActionEvent e){
 	                     
 	                    String uid = F_uid.getText();
@@ -555,9 +574,78 @@ public class AdminMenu {
 	                    catch (SQLException e1) {
 	                        // TODO Auto-generated catch block
 	                         JOptionPane.showMessageDialog(null, e1);
+	                    }
+	                    
+	                    //busca email
+	                    try {
+	                    Statement stmt = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+	                     stmt.executeUpdate("USE LIBRARY");
+	                     
+	                     Connection connection8 = Connect.connect();
+	                     Statement stmt8 = connection8.createStatement();
+	                     stmt8.executeUpdate("USE LIBRARY");                
+	                    ResultSet rs8 = stmt8.executeQuery("SELECT EMAIL FROM USERS WHERE UID="+ uid); //seleciona o email do user com base no seu  id
+	                    String emailUser =null; 
+	                    while (rs8.next()) {
+	                    	emailUser = rs8.getString(1);
+	                          
+	                   	usuario_mail = emailUser;
+	                       }
+	                    }
+	                   // 
+	                    
+	                    catch (SQLException e1) {
+	                        // TODO Auto-generated catch block
+	                         JOptionPane.showMessageDialog(null, e1);
 	                    }  
 	                    
-	                     
+	                    JOptionPane.showMessageDialog(null, usuario_mail);
+	                    
+	                     //enviar email ///
+	                    
+	                    Properties props = new Properties();
+	        		    /** Parâmetros de conexão com servidor Gmail */
+	        		    props.put("mail.smtp.host", "smtp.gmail.com");
+	        		    props.put("mail.smtp.socketFactory.port", "465");
+	        		    props.put("mail.smtp.socketFactory.class",
+	        		    "javax.net.ssl.SSLSocketFactory");
+	        		    props.put("mail.smtp.auth", "true");
+	        		    props.put("mail.smtp.port", "465");
+
+	        		    Session session = Session.getDefaultInstance(props,
+	        		      new javax.mail.Authenticator() {
+	        		           protected PasswordAuthentication getPasswordAuthentication()
+	        		           {
+	        		                 return new PasswordAuthentication("miltonmaleiane1@gmail.com",
+	        		                 "fomento123");
+	        		           }
+	        		      });
+
+	        		    /** Ativa Debug para sessão */
+	        		    session.setDebug(true);
+
+	        		    try {
+
+	        		      Message message = new MimeMessage(session);
+	        		      message.setFrom(new InternetAddress("miltonplay2k@gmail.com"));
+	        		      //Remetente
+
+	        		      Address[] toUser = InternetAddress //Destinatário(s)
+	        		                 .parse(usuario_mail);
+
+	        		      message.setRecipients(Message.RecipientType.TO, toUser);
+	        		      message.setSubject("Enviando email biblioteca com JavaMail");//Assunto
+	        		      message.setText("Encomendou o livro com sucesso devolva dentro de "+period +"dias");
+	        		      /**Método para enviar a mensagem criada*/
+	        		      Transport.send(message);
+
+	        		      System.out.println("Feito!!!");
+
+	        		     } catch (MessagingException j) {
+	        		        throw new RuntimeException(j);
+	        		    }
+	                    
+	                    //** enviar email **//
 	                    }
 	                     
 	                });
