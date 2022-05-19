@@ -406,6 +406,89 @@ public class AdminMenu {
 	    }
 	    });
 	    // fim pesquisar usuario
+	    
+	 // pesquisar livro
+	    JButton find_book=new JButton("pesquisar livro"); //creating instance of JButton to add users
+	    find_book.setBounds(60,200,120,25); //set dimensions for button
+	     
+	    find_book.addActionListener(new ActionListener() {
+	        public void actionPerformed(ActionEvent e){
+	                 
+	                JFrame g = new JFrame("Adicione detalhes do livro"); //Frame to enter user details
+	                //g.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	                //Create label 
+	                JLabel l1,l2,l3,lbBI,lbResidencia; 
+	                l1=new JLabel("ID LIVRO");  //label 1 for username
+	                l1.setBounds(30,15, 100,30); 
+	                 
+	                 
+	                
+	                 
+	                //set text field for username 
+	                JTextField F_user = new JTextField();
+	                F_user.setBounds(110, 15, 200, 30);
+	                 
+	                
+	                
+	               
+	              
+	                                
+	                JButton create_but=new JButton("pesquisar");//creating instance of JButton for Create 
+	                create_but.setBounds(130,230,80,25);//x axis, y axis, width, height 
+	                create_but.addActionListener(new ActionListener() {
+	                     
+	                    public void actionPerformed(ActionEvent e){
+	                     
+	                    	JFrame f = new JFrame("FIND USER");
+	    	                //f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	                    	String id = F_user.getText();
+	                    	 int book_id;
+	                    	 book_id = Integer.parseInt(id);
+	    	              
+	    	                Connection connection = Connect.connect();
+	    	                String sql=("SELECT * FROM LIVROS WHERE BID="+book_id); //retrieve all users
+	    	                try {
+	    	                    Statement stmt = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+	    	                     stmt.executeUpdate("USE LIBRARY"); //use database
+	    	                    stmt=connection.createStatement();
+	    	                    ResultSet rs=stmt.executeQuery(sql);
+	    	                    JTable book_list= new JTable();
+	    	                    book_list.setModel(DbUtils.resultSetToTableModel(rs)); 
+	    	                    //mention scroll bar
+	    	                    JScrollPane scrollPane = new JScrollPane(book_list);
+	    	 
+	    	                    f.add(scrollPane); //add scrollpane
+	    	                    f.setSize(800, 400); //set size for frame
+	    	                    f.setVisible(true);
+	    	                    f.setLocationRelativeTo(null);
+	    	                } catch (SQLException e1) {
+	    	                    // TODO Auto-generated catch block
+	    	                     JOptionPane.showMessageDialog(null, e1);
+	    	                }  
+	                     
+	                    }
+	                
+	                     
+	                });
+	                     
+	                 
+	                    g.add(create_but);
+	                  
+	                    g.add(l1);
+	                
+	                    g.add(F_user);
+	                   
+	                 
+	               
+	                    g.setSize(350,200);//400 width and 500 height  
+	                    g.setLayout(null);//using no layout managers  
+	                    g.setVisible(true);//making the frame visible 
+	                    g.setLocationRelativeTo(null);
+	                 
+	                 
+	    }
+	    });
+	    // fim pesquisar livro
 	    JButton add_book=new JButton("Add Book"); //creating instance of JButton for adding books
 	    add_book.setBounds(150,60,120,25); 
 	     
@@ -702,7 +785,7 @@ public class AdminMenu {
 	     
 	    return_book.addActionListener(new ActionListener() {
 	        public void actionPerformed(ActionEvent e){
-	                 
+	                 String email;
 	                JFrame g = new JFrame("Enter Details");
 	                //g.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	                //set labels 
@@ -736,12 +819,16 @@ public class AdminMenu {
 	                JButton create_but=new JButton("Return");//creating instance of JButton to mention return date and calculcate fine
 	                create_but.setBounds(130,210,80,25);//x axis, y axis, width, height 
 	                create_but.addActionListener(new ActionListener() {
-	                     
-	                	
+	                	double multaEstado;
+	                	String usuario_mail;
 	                	   long diferencaEmDias;
+	                	   String texto;
+	                	   String textoPeriodo;
+	                	   double multaDias;
 	                    public void actionPerformed(ActionEvent e){                 
 	                     
 	                    String iid = F_iid.getText();
+	                   String idUsuario;
 	                   
 	                    String return_date = F_return.getText();
 	                     String mes_R = mes_retorno.getText();
@@ -880,7 +967,7 @@ public class AdminMenu {
 	                    double livroPor2 = (0.10 * preco); //retorna a porcentagem do valor multa
 	                    
 	                    
-	                    double multaDias = 0; // declaracao e inicializacao de multaDIas
+	                     multaDias = 0; // declaracao e inicializacao de multaDIas
 	                   if (periodoUltrapassado >0) {
 	                     multaDias = livroPor2 *     periodoUltrapassado;
 	                   }else {
@@ -900,8 +987,11 @@ public class AdminMenu {
 	                    	estadoCon = rs4.getString(1);
 	                          
 	                       }
+	                    
+	                    
+	                 
 	                    JOptionPane.showMessageDialog(null,"Estado"+estadoCon);
-	                    double multaEstado = 0.0 ; // inicializa  a variavel multa conservacao
+	                     multaEstado = 0.0 ; // inicializa  a variavel multa conservacao
 	                    
 	                    if (estadoCon.equals("Mal conservado")) { // calcula multa consevacao
 	                    	multaEstado = (preco * 0.5);
@@ -914,6 +1004,34 @@ public class AdminMenu {
 	                    	 
 	                    }
 	                    multaTotal = multaDias + multaEstado; 
+	                    Connection connection5 = Connect.connect();
+	                     Statement stmt5 = connection5.createStatement();
+	                     stmt5.executeUpdate("USE LIBRARY");                
+	                    ResultSet rs5 = stmt5.executeQuery("SELECT UID FROM ALUGUER WHERE IID="+ iid); //seleciona o estado do livro com base no seu  id
+	                    String usuario_id =null; 
+	                    while (rs5.next()) {
+	                    	idUsuario = rs5.getString(1);
+	                    	usuario_id = idUsuario;
+	                          
+	                       }
+	                    int iduser = Integer.parseInt(usuario_id);
+	                    Connection connection6 = Connect.connect(); 
+	                     Statement stmt6 = connection6.createStatement();
+	                     stmt6.executeUpdate("USE LIBRARY");                
+	                    ResultSet rs6 = stmt6.executeQuery("SELECT EMAIL FROM USERS WHERE UID="+ iduser); //seleciona o email do user com base no seu  id
+	                    String emailUser =null; 
+	                    while (rs6.next()) {
+	                    	emailUser = rs6.getString(1);
+	                          
+	                   	usuario_mail = emailUser;
+	                   
+	                       }
+	                    
+	                    JOptionPane.showMessageDialog(null,"id usuario"+usuario_id);
+	                    
+	                  
+	                    
+	                    
 	                    System.out.println("multa conservacao"+multaEstado);
 	                    stmt.executeUpdate("UPDATE ALUGUER SET MULTA_CONSERVACAO='"+multaEstado+"' WHERE IID="+iid);
 	                    stmt.executeUpdate("UPDATE ALUGUER SET MULTA_TOTAL='"+multaTotal+"' WHERE IID="+iid);
@@ -927,8 +1045,69 @@ public class AdminMenu {
 	                    catch (SQLException e1) {
 	                        // TODO Auto-generated catch block
 	                         JOptionPane.showMessageDialog(null, e1);
-	                    }   
-	                     
+	                    } 
+	                    
+  //enviar email ///
+	                    
+	                    Properties props = new Properties();
+	        		    /** Parâmetros de conexão com servidor Gmail */
+	        		    props.put("mail.smtp.host", "smtp.gmail.com");
+	        		    props.put("mail.smtp.socketFactory.port", "465");
+	        		    props.put("mail.smtp.socketFactory.class",
+	        		    "javax.net.ssl.SSLSocketFactory");
+	        		    props.put("mail.smtp.auth", "true");
+	        		    props.put("mail.smtp.port", "465");
+
+	        		    Session session = Session.getDefaultInstance(props,
+	        		      new javax.mail.Authenticator() {
+	        		           protected PasswordAuthentication getPasswordAuthentication()
+	        		           {
+	        		                 return new PasswordAuthentication("miltonmaleiane1@gmail.com",
+	        		                 "fomento123");
+	        		           }
+	        		      });
+
+	        		    /** Ativa Debug para sessão */
+	        		    session.setDebug(true);
+
+	        		    try {
+
+	        		      Message message = new MimeMessage(session);
+	        		      message.setFrom(new InternetAddress("miltonmaleiane1@gmail.com"));
+	        		      //Remetente
+
+	        		      Address[] toUser = InternetAddress //Destinatário(s)
+	        		                 .parse(usuario_mail);
+	        		      
+	        		      if (multaEstado> 0) {
+	        		    	   texto = ",poderia ter evitado a multa de "+ multaEstado+ "MZN conservando bem o livro";
+	        		      }else {
+	        		    	  texto = "";
+	        		      }
+	        		    
+	        		      if (multaDias> 0) {
+	        		    	  textoPeriodo = ",Pagou  "+ multaDias+ "MZN de multa por nao ter devolvido o livro dentro do periodo estabelecido"; 
+	        		      }else {
+	        		    	  textoPeriodo = "";
+	        		      }
+	        		     
+	        		      
+	        		      
+	        		      message.setRecipients(Message.RecipientType.TO, toUser);
+	        		      message.setSubject("Email de confirmacao do retorno do livro");//Assunto
+	        		      message.setText(" Devolveu o livro com sucesso  " +""+ texto+""+ textoPeriodo);
+	        		      //message.setText(" Mensagem 2 exemp");
+	        		      /**Método para enviar a mensagem criada*/
+	        		      Transport.send(message);
+
+	        		      System.out.println("Feito!!!");
+
+	        		     } catch (MessagingException j) {
+	        		        throw new RuntimeException(j);
+	        		    }
+	                    
+	                    //** enviar email **// 
+
 	                    }
 	                     
 	                }); 
@@ -957,6 +1136,7 @@ public class AdminMenu {
 	    f.add(view_but);
 	    f.add(add_user);
 	    f.add(find_user);
+	    f.add(find_book);
 	    //f.add(excluir_but);
 	    f.setSize(600,200);//400 width and 500 height  
 	    f.setLayout(null);//using no layout managers  
