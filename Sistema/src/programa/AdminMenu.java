@@ -542,6 +542,8 @@ public class AdminMenu {
 	                create_but.setBounds(130,270,80,25);//x axis, y axis, width, height 
 	                create_but.addActionListener(new ActionListener() {
 	                	String usuario_mail;
+	                	String usuario_nome;
+	                	String livro_nome;
 	                    public void actionPerformed(ActionEvent e){
 	                     
 	                    String uid = F_uid.getText();
@@ -581,7 +583,7 @@ public class AdminMenu {
 	                    Statement stmt = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
 	                     stmt.executeUpdate("USE LIBRARY");
 	                     
-	                     Connection connection8 = Connect.connect();
+	                     Connection connection8 = Connect.connect(); 
 	                     Statement stmt8 = connection8.createStatement();
 	                     stmt8.executeUpdate("USE LIBRARY");                
 	                    ResultSet rs8 = stmt8.executeQuery("SELECT EMAIL FROM USERS WHERE UID="+ uid); //seleciona o email do user com base no seu  id
@@ -591,6 +593,28 @@ public class AdminMenu {
 	                          
 	                   	usuario_mail = emailUser;
 	                       }
+	                    
+	                    Connection connection9 = Connect.connect(); 
+	                     Statement stmt9 = connection9.createStatement();
+	                     stmt9.executeUpdate("USE LIBRARY");                
+	                    ResultSet rs9 = stmt9.executeQuery("SELECT USERNAME FROM USERS WHERE UID="+ uid); //seleciona o email do user com base no seu  id
+	                    String nomeUser =null; 
+	                    while (rs9.next()) {
+	                    	nomeUser = rs9.getString(1);
+	                          
+	                    	usuario_nome = nomeUser;
+	                       }
+	                    
+	                    Connection connection10 = Connect.connect(); 
+	                     Statement stmt10 = connection10.createStatement();
+	                     stmt10.executeUpdate("USE LIBRARY");                
+	                    ResultSet rs10 = stmt10.executeQuery("SELECT NOMEL FROM LIVROS WHERE BID="+ bid); //seleciona o email do user com base no seu  id
+	                    String nomeLivro =null; 
+	                    while (rs10.next()) {
+	                    	nomeLivro = rs10.getString(1);
+	                          
+	                    	livro_nome = nomeLivro;
+	                       }
 	                    }
 	                   // 
 	                    
@@ -599,7 +623,7 @@ public class AdminMenu {
 	                         JOptionPane.showMessageDialog(null, e1);
 	                    }  
 	                    
-	                    JOptionPane.showMessageDialog(null, usuario_mail);
+	                    JOptionPane.showMessageDialog(null, livro_nome);
 	                    
 	                     //enviar email ///
 	                    
@@ -627,15 +651,15 @@ public class AdminMenu {
 	        		    try {
 
 	        		      Message message = new MimeMessage(session);
-	        		      message.setFrom(new InternetAddress("miltonplay2k@gmail.com"));
+	        		      message.setFrom(new InternetAddress("miltonmaleiane1@gmail.com"));
 	        		      //Remetente
 
 	        		      Address[] toUser = InternetAddress //Destinatário(s)
 	        		                 .parse(usuario_mail);
 
 	        		      message.setRecipients(Message.RecipientType.TO, toUser);
-	        		      message.setSubject("Enviando email biblioteca com JavaMail");//Assunto
-	        		      message.setText("Encomendou o livro com sucesso devolva dentro de "+period +"dias");
+	        		      message.setSubject("Email de confirmacao do aluger do livro");//Assunto
+	        		      message.setText("Caro (a)"+usuario_nome+ "Alugou o livro"+livro_nome+" com sucesso devolva dentro de "+period +"dias");
 	        		      /**Método para enviar a mensagem criada*/
 	        		      Transport.send(message);
 
