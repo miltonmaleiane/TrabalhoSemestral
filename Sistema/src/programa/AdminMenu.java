@@ -13,6 +13,7 @@ import javax.mail.internet.MimeMessage;
 
 import java.awt.event.ActionListener;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -140,6 +141,43 @@ public class AdminMenu {
 	    }
 	        }
 	    );  
+// ver feedback
+	    
+	    JButton btFeedback=new JButton("Ver feedbacks");//creating instance of JButton to view users
+	    btFeedback.setBounds(250,140,120,25);//x axis, y axis, width, height 
+	    btFeedback.addActionListener(new ActionListener() { //Perform action on click button
+	        public void actionPerformed(ActionEvent e){
+	                 
+	                JFrame f = new JFrame("Lista feedbacks");
+	                //f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	                 
+	                 
+	                Connection connection = Connect.connect();
+	                String sql="select * from feedback"; //retrieve all users
+	                try {
+	                    Statement stmt = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
+	                     stmt.executeUpdate("USE LIBRARY"); //use database
+	                    stmt=connection.createStatement();
+	                    ResultSet rs=stmt.executeQuery(sql);
+	                    JTable book_list= new JTable();
+	                    book_list.setModel(DbUtils.resultSetToTableModel(rs)); 
+	                    //mention scroll bar
+	                    JScrollPane scrollPane = new JScrollPane(book_list);
+	 
+	                    f.add(scrollPane); //add scrollpane
+	                    f.setSize(800, 400); //set size for frame
+	                    f.setVisible(true);
+	                    f.setLocationRelativeTo(null);
+	                } catch (SQLException e1) {
+	                    // TODO Auto-generated catch block
+	                     JOptionPane.showMessageDialog(null, e1);
+	                }       
+	                 
+	                 
+	    }
+	        }
+	    );  
+// fim ver feedback
 	     
 	    JButton issued_but=new JButton("View Issued Books");//creating instance of JButton to view the issued books
 	    issued_but.setBounds(280,20,160,25);//x axis, y axis, width, height 
@@ -489,6 +527,247 @@ public class AdminMenu {
 	    }
 	    });
 	    // fim pesquisar livro
+	    
+	    // remover livro
+	    JButton remove_book=new JButton("apagar livro"); //creating instance of JButton to add users
+	    remove_book.setBounds(180,200,120,25); //set dimensions for button
+	     
+	    remove_book.addActionListener(new ActionListener() {
+	        public void actionPerformed(ActionEvent e){
+	                 
+	                JFrame g = new JFrame("Adicione detalhes do livro"); //Frame to enter user details
+	                //g.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	                //Create label 
+	                JLabel l1,l2,l3,lbBI,lbResidencia; 
+	                l1=new JLabel("ID LIVRO");  //label 1 for username
+	                l1.setBounds(30,15, 100,30); 
+	                 
+	                 
+	                
+	                 
+	                //set text field for username 
+	                JTextField F_user = new JTextField();
+	                F_user.setBounds(110, 15, 200, 30);
+	                 
+	                
+	                
+	               
+	              
+	                                
+	                JButton create_but=new JButton("remover");//creating instance of JButton for Create 
+	                create_but.setBounds(130,230,80,25);//x axis, y axis, width, height 
+	                create_but.addActionListener(new ActionListener() {
+	                     
+	                    public void actionPerformed(ActionEvent e){
+	                     
+	                    	JFrame f = new JFrame("FIND USER");
+	    	                //f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	                    	String id = F_user.getText();
+	                    	 int book_id;
+	                    	 book_id = Integer.parseInt(id);
+	    	             String idLivro = Integer.toString(book_id);
+	    	                Connection connection = Connect.connect();
+	    	                String sql=("DELETE FROM LIVROS WHERE BID=?"); //retrieve all users
+	    	                  try {
+	    	               
+	    	            
+	    	                PreparedStatement statement = connection.prepareStatement(sql);
+	    	           	  statement.executeUpdate("USE LIBRARY");
+	    	                statement.setString(1, idLivro);
+	    	                 
+	    	                int rowsDeleted = statement.executeUpdate();
+	    	                if (rowsDeleted > 0) {
+	    	                	   JOptionPane.showMessageDialog(null, "livro removido com sucesso");
+	    	                }
+	    	                }catch (SQLException e1) {
+	    	                    // TODO Auto-generated catch block
+	    	                     JOptionPane.showMessageDialog(null, e1);
+	    	                }  
+	                     
+	                    }
+	                
+	                     
+	                });
+	                     
+	                 
+	                    g.add(create_but);
+	                  
+	                    g.add(l1);
+	                
+	                    g.add(F_user);
+	                   
+	                 
+	               
+	                    g.setSize(350,200);//400 width and 500 height  
+	                    g.setLayout(null);//using no layout managers  
+	                    g.setVisible(true);//making the frame visible 
+	                    g.setLocationRelativeTo(null);
+	                 
+	                 
+	    }
+	    });
+	    // fim remover livro
+	    
+	 // remover ALUGUER
+	    JButton remove_alugueres=new JButton("apagar alugueres"); //creating instance of JButton to add users
+	    remove_alugueres.setBounds(230,200,120,25); //set dimensions for button
+	     
+	    remove_alugueres.addActionListener(new ActionListener() {
+	        public void actionPerformed(ActionEvent e){
+	                 
+	                JFrame g = new JFrame("Adicione detalhes do aluguer"); //Frame to enter user details
+	                //g.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	                //Create label 
+	                JLabel l1,l2,l3,lbBI,lbResidencia; 
+	                l1=new JLabel("ID da emissao");  //label 1 for username
+	                l1.setBounds(30,15, 100,30); 
+	                 
+	                 
+	                
+	                 
+	                //set text field for username 
+	                JTextField F_user = new JTextField();
+	                F_user.setBounds(110, 15, 200, 30);
+	                 
+	                
+	                
+	               
+	              
+	                                
+	                JButton create_but=new JButton("remover");//creating instance of JButton for Create 
+	                create_but.setBounds(130,230,80,25);//x axis, y axis, width, height 
+	                create_but.addActionListener(new ActionListener() {
+	                     
+	                    public void actionPerformed(ActionEvent e){
+	                     
+	                    	JFrame f = new JFrame("Remover aluguer");
+	    	                //f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	                    	String id = F_user.getText();
+	                    	 int aluguer_id;
+	                    	 aluguer_id = Integer.parseInt(id);
+	    	             String idAluguer = Integer.toString(aluguer_id);
+	    	                Connection connection = Connect.connect();
+	    	                String sql=("DELETE FROM ALUGUER WHERE IID=?"); //retrieve all users
+	    	                  try {
+	    	               
+	    	            
+	    	                PreparedStatement statement = connection.prepareStatement(sql);
+	    	           	  statement.executeUpdate("USE LIBRARY");
+	    	                statement.setString(1, idAluguer);
+	    	                 
+	    	                int rowsDeleted = statement.executeUpdate();
+	    	                if (rowsDeleted > 0) {
+	    	                	   JOptionPane.showMessageDialog(null, "Aluguer removido com sucesso");
+	    	                }
+	    	                }catch (SQLException e1) {
+	    	                    // TODO Auto-generated catch block
+	    	                     JOptionPane.showMessageDialog(null, e1);
+	    	                }  
+	                     
+	                    }
+	                
+	                     
+	                });
+	                     
+	                 
+	                    g.add(create_but);
+	                  
+	                    g.add(l1);
+	                
+	                    g.add(F_user);
+	                   
+	                 
+	               
+	                    g.setSize(350,200);//400 width and 500 height  
+	                    g.setLayout(null);//using no layout managers  
+	                    g.setVisible(true);//making the frame visible 
+	                    g.setLocationRelativeTo(null);
+	                 
+	                 
+	    }
+	    });
+	    // fim remover ALUGUER
+	    
+	    // remover USuarios
+	    JButton remove_usuarios=new JButton("apagar usuarios"); //creating instance of JButton to add users
+	    remove_usuarios.setBounds(230,400,120,25); //set dimensions for button
+	     
+	    remove_usuarios.addActionListener(new ActionListener() {
+	        public void actionPerformed(ActionEvent e){
+	                 
+	                JFrame g = new JFrame("Adicione detalhes do usuario"); //Frame to enter user details
+	                //g.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	                //Create label 
+	                JLabel l1,l2,l3,lbBI,lbResidencia; 
+	                l1=new JLabel("ID do usuario");  //label 1 for username
+	                l1.setBounds(30,15, 100,30); 
+	                 
+	                 
+	                
+	                 
+	                //set text field for username 
+	                JTextField F_user = new JTextField();
+	                F_user.setBounds(110, 15, 200, 30);
+	                 
+	                
+	                
+	               
+	              
+	                                
+	                JButton create_but=new JButton("remover");//creating instance of JButton for Create 
+	                create_but.setBounds(130,230,80,25);//x axis, y axis, width, height 
+	                create_but.addActionListener(new ActionListener() {
+	                     
+	                    public void actionPerformed(ActionEvent e){
+	                     
+	                    	JFrame f = new JFrame("Remover usuario");
+	    	                //f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	                    	String id = F_user.getText();
+	                    	 int user_id;
+	                    	 user_id = Integer.parseInt(id);
+	    	             String idUser = Integer.toString(user_id);
+	    	                Connection connection = Connect.connect();
+	    	                String sql=("DELETE FROM USERS WHERE UID=?"); //retrieve all users
+	    	                  try {
+	    	               
+	    	            
+	    	                PreparedStatement statement = connection.prepareStatement(sql);
+	    	           	  statement.executeUpdate("USE LIBRARY");
+	    	                statement.setString(1, idUser);
+	    	                 
+	    	                int rowsDeleted = statement.executeUpdate();
+	    	                if (rowsDeleted > 0) {
+	    	                	   JOptionPane.showMessageDialog(null, "User"
+	    	                	   		+ " removido com sucesso");
+	    	                }
+	    	                }catch (SQLException e1) {
+	    	                    // TODO Auto-generated catch block
+	    	                     JOptionPane.showMessageDialog(null, e1);
+	    	                }  
+	                     
+	                    }
+	                
+	                     
+	                });
+	                     
+	                 
+	                    g.add(create_but);
+	                  
+	                    g.add(l1);
+	                
+	                    g.add(F_user);
+	                   
+	                 
+	               
+	                    g.setSize(350,200);//400 width and 500 height  
+	                    g.setLayout(null);//using no layout managers  
+	                    g.setVisible(true);//making the frame visible 
+	                    g.setLocationRelativeTo(null);
+	                 
+	                 
+	    }
+	    });
+	    // fim remover USuarios
 	    JButton add_book=new JButton("Add Book"); //creating instance of JButton for adding books
 	    add_book.setBounds(150,60,120,25); 
 	     
@@ -723,8 +1002,8 @@ public class AdminMenu {
 	        		      new javax.mail.Authenticator() {
 	        		           protected PasswordAuthentication getPasswordAuthentication()
 	        		           {
-	        		                 return new PasswordAuthentication("miltonmaleiane1@gmail.com",
-	        		                 "fomento123");
+	        		                 return new PasswordAuthentication("uembiblioteca2022@gmail.com",
+	        		                 "@biblioteca2022");
 	        		           }
 	        		      });
 
@@ -742,7 +1021,7 @@ public class AdminMenu {
 
 	        		      message.setRecipients(Message.RecipientType.TO, toUser);
 	        		      message.setSubject("Email de confirmacao do aluger do livro");//Assunto
-	        		      message.setText("Caro (a)"+usuario_nome+ "Alugou o livro"+livro_nome+" com sucesso devolva dentro de "+period +"dias");
+	        		      message.setText("Caro (a)"+usuario_nome+ "Alugou o livro"+""+livro_nome+""+" com sucesso devolva dentro de "+""+period +"dias");
 	        		      /**Método para enviar a mensagem criada*/
 	        		      Transport.send(message);
 
@@ -1062,8 +1341,8 @@ public class AdminMenu {
 	        		      new javax.mail.Authenticator() {
 	        		           protected PasswordAuthentication getPasswordAuthentication()
 	        		           {
-	        		                 return new PasswordAuthentication("miltonmaleiane1@gmail.com",
-	        		                 "fomento123");
+	        		                 return new PasswordAuthentication("uembiblioteca2022@gmail.com",
+	        		                 "@biblioteca2022");
 	        		           }
 	        		      });
 
@@ -1117,6 +1396,7 @@ public class AdminMenu {
 	                    g.add(F_iid);
 	                    g.add(F_return);
 	                    g.add(ano_retorno);
+	                 
 	                  g.add(mes_retorno);
 	                  g.add(lbEstado);
 	                  g.add(cbEstado);
@@ -1137,6 +1417,10 @@ public class AdminMenu {
 	    f.add(add_user);
 	    f.add(find_user);
 	    f.add(find_book);
+	    f.add(remove_book);
+	    f.add(remove_alugueres);
+	    f.add(remove_usuarios);
+	    f.add(btFeedback);
 	    //f.add(excluir_but);
 	    f.setSize(600,200);//400 width and 500 height  
 	    f.setLayout(null);//using no layout managers  

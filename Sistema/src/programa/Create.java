@@ -40,6 +40,8 @@ public class Create {
 	          //Insert into books table
 	          ((java.sql.Statement) stmt).executeUpdate("INSERT INTO BOOKS(BNAME, GENRE, PRICE) VALUES ('War and Peace', 'Mystery', 200),  ('The Guest Book', 'Fiction', 300), ('The Perfect Murder','Mystery', 150), ('Accidental Presidents', 'Biography', 250), ('The Wicked King','Fiction', 350)");
 	           
+	          //Create review table
+	          ((java.sql.Statement) stmt).executeUpdate("CREATE TABLE FEEDBACK(FID INT NOT NULL AUTO_INCREMENT PRIMARY KEY, SUGESTAO TEXT, RECLAMACAO TEXT, SATISFACAO VARCHAR(20), USUARIO VARCHAR(20))");
 	   // ESTADO, MULTA_DIAS, MULTA_CONSERVACAO
 	          resultSet.close();
 	    }
