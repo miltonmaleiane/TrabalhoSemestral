@@ -22,6 +22,7 @@ public class Principal {
     public static void main(String[] args) {
          
        login.login();
+    	//AdminMenu.admin_menu();
         //create();
     }
 

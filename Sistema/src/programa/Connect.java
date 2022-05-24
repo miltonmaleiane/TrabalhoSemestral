@@ -8,9 +8,9 @@ public class Connect {
 	{
 	try {
 	        Class.forName("com.mysql.cj.jdbc.Driver");
-	        //System.out.println("Loaded driver");
+	        //System.out.println("Logado ao driver");
 	        Connection con = DriverManager.getConnection("jdbc:mysql://localhost/mysql?user=root&password=123456");
-	        //System.out.println("Connected to MySQL");
+	        //System.out.println("Connectedado ao MySQL");
 	        return con;
 	 } 
 	 catch (Exception ex) {
