@@ -14,5 +14,6 @@
 	<classpathentry kind="lib" path="C:/Users/Maleiane/Downloads/rs2xml.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Maleiane/Downloads/activation-1.1.1.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Maleiane/Downloads/javax.mail.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Maleiane/Downloads/itextpdf-5.5.9.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -46,17 +46,21 @@ public class Create {
 	          ((java.sql.Statement) stmt).executeUpdate("CREATE TABLE relatorio1(R1ID INT ,CAD_USERS INT, CAD_LIVROS INT , LIVROS_ALUGADOS INT, LIVROS_DEVOLVIDOS INT)");
 	          ((java.sql.Statement) stmt).executeUpdate("CREATE TABLE relatorio2(R2ID INT ,MULTAS_ATRASO INT, MULTAS_CONS INT , TOT_MULTAS INT)");
 	          ((java.sql.Statement) stmt).executeUpdate("CREATE TABLE relatorio3(R3ID INT ,FEED_TOTAL INT, M_INSA INT,INSA INT, SATISF INT, M_SATISF INT)");
-	          ((java.sql.Statement) stmt).executeUpdate("CREATE TABLE relatorio4(R4ID INT ,MULTA_ATRASO DECIMAL(10,0), MULTA_CONSERVACAO DECIMAL(10,0),MULTA_TOTAL DECIMAL(10,0))");
+	          ((java.sql.Statement) stmt).executeUpdate("CREATE TABLE relatorio4(R4ID INT ,MULTA_ATRASO DECIMAL(10,0), MULTA_CONSERVACAO DECIMAL(10,0),MULTA_TOTAL DECIMAL(10,0),VALOR_ALUGUER DECIMAL(10,0))");
 	   // ESTADO, MULTA_DIAS, MULTA_CONSERVACAO
+	          
+	       // QUERRY RELATORIO 1
+	          // INSERT INTO RELATORIO1 (R1ID,CAD_USERS, CAD_LIVROS, LIVROS_ALUGADOS,LIVROS_DEVOLVIDOS) VALUES(1,0,0,0,0);
+
 	          
 	          // QUERRY RELATORIO 2
 	          // INSERT INTO RELATORIO2 (R2ID,MULTAS_ATRASO, MULTAS_CONS, TOT_MULTAS) VALUES(1,0,0,0);
 
 	       // QUERRY RELATORIO 3
-	          // INSERT INTO RELATORIO3 (R3ID, FEED_TOTAL, M_INSA, INSA,SATISF,M_SATISF ) VALUES(1,0,0,0,0);
+	          // INSERT INTO RELATORIO3 (R3ID, FEED_TOTAL, M_INSA, INSA,SATISF,M_SATISF ) VALUES(1,0,0,0,0,0);
 	          
 	       // QUERRY RELATORIO 4
-	          // INSERT INTO RELATORIO4 (R4ID, MULTA_ATRASO, MULTA_CONSERVACAO,MULTA_TOTAL ) VALUES(1,0,0,0);
+	          //
 	          resultSet.close();
 	    }
 	     catch (Exception ex) {

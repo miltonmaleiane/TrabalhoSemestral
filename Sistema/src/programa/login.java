@@ -68,11 +68,11 @@ public class login {
 	         
 	        if(username.equals("")) //
 	        {
-	            JOptionPane.showMessageDialog(null,"Please enter username"); //
+	            JOptionPane.showMessageDialog(null,"Por favor introduza um username"); //
 	        } 
 	        else if(password.equals("")) //If password is null
 	        {
-	            JOptionPane.showMessageDialog(null,"Please enter password"); 
+	            JOptionPane.showMessageDialog(null,"Por favor introduza uma password"); 
 	        }
 	        else { //
 	            //System.out.println("Login connect");
@@ -84,7 +84,7 @@ public class login {
 	              String st = ("SELECT * FROM USERS WHERE USERNAME='"+username+"' AND PASSWORD='"+password+"'"); //
 	              ResultSet rs = ((java.sql.Statement) stmt).executeQuery(st); //Execute query
 	              if(rs.next()==false) { //Move pointer below
-	                  System.out.print("No user");  
+	                  System.out.print("Sem usuario");  
 	                  JOptionPane.showMessageDialog(null," Username/Password errado!"); //
 	 
 	              }
